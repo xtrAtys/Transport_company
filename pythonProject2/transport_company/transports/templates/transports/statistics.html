@@ -1,0 +1,82 @@
+{% extends 'transports/base.html' %}
+
+{% block content %}
+<h1>Статистика перевозок</h1>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Трейлер с наибольшим количеством заказов</h5>
+            </div>
+            <div class="card-body">
+                {% if top_trailer %}
+                <p><strong>Марка:</strong> {{ top_trailer.brand }}</p>
+                <p><strong>Гос. номер:</strong> {{ top_trailer.license_plate }}</p>
+                <p><strong>Количество заказов:</strong> {{ top_trailer.order_count }}</p>
+                {% else %}
+                <p>Нет данных</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Водитель с наибольшим количеством заказов</h5>
+            </div>
+            <div class="card-body">
+                {% if top_driver %}
+                <p><strong>ФИО:</strong> {{ top_driver.full_name }}</p>
+                <p><strong>Классность:</strong> {{ top_driver.get_driver_class_display }}</p>
+                <p><strong>Количество заказов:</strong> {{ top_driver.order_count }}</p>
+                {% else %}
+                <p>Нет данных</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Рейсы без напарника</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Заказ</th>
+                    <th>Маршрут</th>
+                    <th>Расстояние</th>
+                    <th>Водитель</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in solo_orders %}
+                <tr>
+                    <td>{{ order.name }}</td>
+                    <td>{{ order.departure_point }} → {{ order.destination_point }}</td>
+                    <td>{{ order.distance }} км</td>
+                    <td>{{ order.driver }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Нет рейсов без напарника</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Общая прибыль предприятия</h5>
+    </div>
+    <div class="card-body">
+        <h4>{{ total_profit|floatformat:2 }} руб.</h4>
+    </div>
+</div>
+{% endblock %}

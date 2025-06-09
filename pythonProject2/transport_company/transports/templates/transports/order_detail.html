@@ -1,0 +1,26 @@
+{% extends 'transports/base.html' %}
+
+{% block content %}
+<h1>Заказ #{{ order.pk }}</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ order.name }}</h5>
+        <p class="card-text">
+            <strong>Маршрут:</strong> {{ order.departure_point }} → {{ order.destination_point }}<br>
+            <strong>Расстояние:</strong> {{ order.distance }} км<br>
+            <strong>Вес:</strong> {{ order.weight }} тонн<br>
+            <strong>Количество мест:</strong> {{ order.items_count }}<br>
+            <strong>Трейлер:</strong> {{ order.trailer|default:"Не назначен" }}<br>
+            <strong>Водитель:</strong> {{ order.driver|default:"Не назначен" }}<br>
+            <strong>Напарник:</strong> {% if order.has_partner %}{{ order.driver.partner }}{% else %}Не требуется{% endif %}<br>
+            <strong>Стоимость:</strong> {{ order.calculate_cost|floatformat:2 }} руб.<br>
+            <strong>Статус:</strong> {% if order.completed %}Завершен{% else %}В процессе{% endif %}
+        </p>
+        <div class="mt-3">
+            <a href="{% url 'order_edit' order.pk %}" class="btn btn-warning">Редактировать</a>
+            <a href="{% url 'order_list' %}" class="btn btn-secondary">Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

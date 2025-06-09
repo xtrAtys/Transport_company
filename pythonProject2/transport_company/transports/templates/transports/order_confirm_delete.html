@@ -1,0 +1,13 @@
+{% extends 'transports/base.html' %}
+
+{% block content %}
+<h1>Удаление заказа</h1>
+
+<p>Вы уверены, что хотите удалить заказ "{{ order.name }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a href="{% url 'order_detail' order.pk %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
